@@ -1,0 +1,16 @@
+# Paso 4: todo el tráfico del Gateway va al Service asr-flask, sin reparto por versión
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: asr-flask
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - asr-gateway
+  http:
+  - route:
+    - destination:
+        host: asr-flask.default.svc.cluster.local
+        port:
+          number: 80

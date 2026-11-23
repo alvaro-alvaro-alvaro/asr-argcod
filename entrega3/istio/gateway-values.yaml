@@ -1,0 +1,6 @@
+# Valores del chart istio/gateway: el LoadBalancer del ingress gateway
+# solo acepta tráfico de IPs de confianza
+service:
+  loadBalancerSourceRanges:
+  - 130.206.72.4/32
+  - 34.140.228.139/32

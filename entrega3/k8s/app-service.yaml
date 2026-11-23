@@ -1,0 +1,19 @@
+# Service compartido por la v1 y la v2 (el selector solo mira app: asr-flask).
+# Sigue siendo LoadBalancer (como en la práctica 07), restringido a IPs de confianza.
+# El puerto se llama "http" para que Istio sepa que el protocolo es HTTP.
+apiVersion: v1
+kind: Service
+metadata:
+  name: asr-flask
+spec:
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+  - 130.206.72.4/32
+  - 34.140.228.139/32
+  selector:
+    app: asr-flask
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP

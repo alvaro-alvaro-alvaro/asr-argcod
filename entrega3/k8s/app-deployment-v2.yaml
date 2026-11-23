@@ -1,0 +1,46 @@
+# App Flask v2. Comparte el Service asr-flask (selector app: asr-flask) y el Redis
+# con la otra versión; los pods se distinguen por la label version: v2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asr-flask-v2
+  labels:
+    app: asr-flask
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asr-flask
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: asr-flask
+        version: v2
+    spec:
+      containers:
+      - name: asr-flask
+        image: europe-southwest1-docker.pkg.dev/asr-alvaro1357/asr-registry/asr-flask:v2
+        ports:
+        - containerPort: 8080
+        env:
+        - name: REDIS_IP_GCP
+          value: "redis"
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
